@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Генератор порад (Варіант 5)</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Генератор корисних порад</h1>
+    <p>Використання Advice Slip API</p>
+    
+    <div class="controls">
+      <!-- Кнопка для fetch -->
+      <button id="btnFetch">Отримати випадкову пораду (Fetch)</button>
+      
+      <!-- Кнопка для axios -->
+      <button id="btnAxios">ТОП-5 порад (Axios)</button>
+      
+      <!-- Кнопка оновлення/очищення -->
+      <button id="btnClear">Очистити дані</button>
+    </div>
+
+    <div id="result"></div>
+  </div>
+
+  <!-- Підключення бібліотеки Axios через CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

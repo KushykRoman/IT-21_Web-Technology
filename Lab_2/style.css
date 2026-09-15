@@ -58,7 +58,7 @@ button#btnClear:hover {
   text-align: left;
 }
 
-/* Стилізація текстових даних у вигляді карток[cite: 1] */
+/* Стилізація текстових даних у вигляді карток*/
 .advice-card {
   background-color: #e9ecef;
   padding: 15px;

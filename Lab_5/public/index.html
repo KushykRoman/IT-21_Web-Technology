@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лабораторна робота 5 - Express.js</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Вітаю! Це мій перший сервер на Express.js</h1>
+        
+        <div class="nav-links">
+            <a href="/student" class="btn">Переглянути дані студента (HTML)</a>
+            <a href="/json" class="btn">Переглянути дані (JSON)</a>
+        </div>
+
+        <hr>
+
+        <h2>Редагування даних студента</h2>
+        <form action="/update" method="POST" id="updateForm">
+            <div class="form-group">
+                <label for="name">Ім'я:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="group">Група:</label>
+                <input type="text" id="group" name="group" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="message">Повідомлення:</label>
+                <textarea id="message" name="message" rows="3" required></textarea>
+            </div>
+            
+            <button type="submit" class="btn btn-update">Оновити дані</button>
+        </form>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+

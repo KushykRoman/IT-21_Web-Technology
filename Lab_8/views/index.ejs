@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Додавання рецепту</title>
+    <style>
+        body { font-family: sans-serif; max-width: 500px; margin: 20px auto; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input, textarea, select { width: 100%; padding: 8px; box-sizing: border-box; }
+        .error-msg { color: red; font-size: 0.9em; margin-top: 5px; display: block; }
+        button { padding: 10px 15px; background-color: #007bff; color: white; border: none; cursor: pointer; }
+        button:hover { background-color: #0056b3; }
+    </style>
+</head>
+<body>
+    <h2>Додати кулінарний рецепт</h2>
+
+    <form action="/submit" method="POST">
+        <div class="form-group">
+            <label for="name">Назва рецепту:</label>
+            <input type="text" id="name" name="name" value="<%= old.name || '' %>">
+            <% const nameErr = errors.find(e => e.path === 'name'); %>
+            <% if (nameErr) { %> <span class="error-msg"><%= nameErr.msg %></span> <% } %>
+        </div>
+
+        <div class="form-group">
+            <label for="ingredients">Інгредієнти:</label>
+            <textarea id="ingredients" name="ingredients" rows="4"><%= old.ingredients || '' %></textarea>
+            <% const ingErr = errors.find(e => e.path === 'ingredients'); %>
+            <% if (ingErr) { %> <span class="error-msg"><%= ingErr.msg %></span> <% } %>
+        </div>
+
+        <div class="form-group">
+            <label for="cookingTime">Час приготування (хв):</label>
+            <input type="number" id="cookingTime" name="cookingTime" value="<%= old.cookingTime || '' %>">
+            <% const timeErr = errors.find(e => e.path === 'cookingTime'); %>
+            <% if (timeErr) { %> <span class="error-msg"><%= timeErr.msg %></span> <% } %>
+        </div>
+
+        <div class="form-group">
+            <label for="difficulty">Складність:</label>
+            <select id="difficulty" name="difficulty">
+                <option value="">--Оберіть--</option>
+                <option value="easy" <%= old.difficulty === 'easy' ? 'selected' : '' %>>Легко (easy)</option>
+                <option value="medium" <%= old.difficulty === 'medium' ? 'selected' : '' %>>Середньо (medium)</option>
+                <option value="hard" <%= old.difficulty === 'hard' ? 'selected' : '' %>>Складно (hard)</option>
+            </select>
+            <% const diffErr = errors.find(e => e.path === 'difficulty'); %>
+            <% if (diffErr) { %> <span class="error-msg"><%= diffErr.msg %></span> <% } %>
+        </div>
+
+        <button type="submit">Зберегти рецепт</button>
+    </form>
+</body>
+</html>

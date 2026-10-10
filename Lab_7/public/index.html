@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Розклад занять</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Керування розкладом</h1>
+        
+        <div class="filter-section">
+            <input type="text" id="filterDay" placeholder="Фільтр за днем (напр. Monday)...">
+        </div>
+
+        <form id="scheduleForm">
+            <input type="hidden" id="editId">
+            <input type="text" id="dayInput" placeholder="День тижня (напр. Monday)" required>
+            <input type="text" id="subjectInput" placeholder="Предмет" required>
+            <button type="submit">Зберегти</button>
+        </form>
+
+        <ul id="scheduleList"></ul>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

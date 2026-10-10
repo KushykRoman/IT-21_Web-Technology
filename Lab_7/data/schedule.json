@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "day": "Monday",
+    "subject": "Math"
+  },
+  {
+    "id": 2,
+    "day": "Tuesday",
+    "subject": "Web Design"
+  }
+]

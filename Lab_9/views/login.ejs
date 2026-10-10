@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Вхід</title>
+</head>
+<body>
+    <h1>Вхід в систему</h1>
+    
+    <% if (error && error.length > 0) { %>
+        <div style="color: red;"><%= error %></div>
+    <% } %>
+
+    <form action="/login" method="POST">
+        <div>
+            <label>Email:</label>
+            <input type="email" name="email" value="<%= oldData.email || '' %>" required>
+        </div>
+        <div>
+            <label>Пароль:</label>
+            <input type="password" name="password" required>
+        </div>
+        <button type="submit">Увійти</button>
+    </form>
+    <br>
+    <a href="/register">Немає акаунту? Зареєструватися</a>
+</body>
+</html>

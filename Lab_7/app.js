@@ -32,7 +32,7 @@ app.get('/api/schedule', (req, res) => {
     res.json(data);
 });
 
-// POST: Додати нове заняття[cite: 1]
+// POST: Додати нове заняття
 app.post('/api/schedule', (req, res) => {
     const data = readData();
     const newItem = {
@@ -45,7 +45,7 @@ app.post('/api/schedule', (req, res) => {
     res.json({ message: 'Заняття додано', item: newItem });
 });
 
-// PUT: Оновити існуюче заняття[cite: 1]
+// PUT: Оновити існуюче заняття
 app.put('/api/schedule/:id', (req, res) => {
     let data = readData();
     const id = parseInt(req.params.id);
@@ -60,7 +60,7 @@ app.put('/api/schedule/:id', (req, res) => {
     }
 });
 
-// DELETE: Видалити заняття[cite: 1]
+// DELETE: Видалити заняття
 app.delete('/api/schedule/:id', (req, res) => {
     let data = readData();
     const id = parseInt(req.params.id);

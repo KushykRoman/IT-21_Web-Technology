@@ -1,3 +1,4 @@
+// Підключення необхідних бібліотек і функцій для роботи сервера, сесій, паролів, перевірки даних і файлів.
 const express = require('express');
 const session = require('express-session');
 const bcrypt = require('bcrypt');
@@ -6,9 +7,11 @@ const flash = require('connect-flash');
 const path = require('path');
 const { read, write } = require('./utils/db');
 
+// Створення Express-додатка та визначення порту сервера.
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Налаштування обробки JSON, HTML-форм, сесій користувачів і статичних файлів.
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(session({
@@ -20,15 +23,20 @@ app.use(session({
 app.use(flash());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Middleware для перевірки авторизації користувача перед доступом до захищених маршрутів.
 function isAuthenticated(req, res, next) {
   if (req.session.user) return next();
   return res.status(401).json({ message: 'Потрібно увійти в систему.', redirect: '/login.html' });
 }
+
+// Правила перевірки назви та пріоритету завдання.
 const taskValidation = [
   body('title').trim().isLength({ min: 1, max: 100 }).withMessage('Назва має містити від 1 до 100 символів.'),
   body('priority').optional().isIn(['низька', 'середня', 'висока']).withMessage('Неправильний пріоритет.')
 ];
 
+// Реєстрація нового користувача: перевірка даних, пошук повторного email,
+// хешування пароля, збереження користувача та створення сесії.
 app.post('/api/register', [
   body('name').trim().isLength({ min: 2, max: 80 }).withMessage('Введіть ПІБ (від 2 до 80 символів).'),
   body('email').trim().isEmail().withMessage('Введіть коректний email.'),
@@ -55,6 +63,8 @@ app.post('/api/register', [
   }
 });
 
+// Авторизація користувача: перевірка email і пароля, створення нової сесії
+// та повернення даних користувача після успішного входу.
 app.post('/api/login', [
   body('email').trim().isEmail().withMessage('Введіть коректний email.'),
   body('password').notEmpty().withMessage('Введіть пароль.')
@@ -73,6 +83,7 @@ app.post('/api/login', [
   });
 });
 
+// Завершення сесії користувача та видалення cookie авторизації.
 app.get('/api/logout', (req, res) => {
   req.session.destroy(err => {
     if (err) return res.status(500).json({ message: 'Не вдалося завершити сесію.' });
@@ -81,12 +92,16 @@ app.get('/api/logout', (req, res) => {
   });
 });
 
+// Отримання інформації про поточного авторизованого користувача.
 app.get('/api/me', isAuthenticated, (req, res) => res.json({ user: req.session.user }));
 
+// Отримання списку завдань лише поточного користувача.
 app.get('/api/tasks', isAuthenticated, (req, res) => {
   res.json(read('tasks.json').filter(t => t.userId === req.session.user.id));
 });
 
+// Додавання нового завдання: перевірка даних, створення об'єкта,
+// призначення ID і власника, збереження у файлі tasks.json.
 app.post('/api/tasks', isAuthenticated, taskValidation, (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array().map(e => e.msg) });
@@ -104,6 +119,8 @@ app.post('/api/tasks', isAuthenticated, taskValidation, (req, res) => {
   res.status(201).json(task);
 });
 
+// Редагування завдання за ID: перевірка власника, оновлення назви,
+// пріоритету та статусу виконання із подальшим збереженням змін.
 app.put('/api/tasks/:id', isAuthenticated, taskValidation, (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array().map(e => e.msg) });
@@ -117,6 +134,7 @@ app.put('/api/tasks/:id', isAuthenticated, taskValidation, (req, res) => {
   res.json({ success: true, task });
 });
 
+// Видалення завдання за ID з перевіркою того, чи належить воно поточному користувачу.
 app.delete('/api/tasks/:id', isAuthenticated, (req, res) => {
   const tasks = read('tasks.json');
   const index = tasks.findIndex(t => t.id === Number(req.params.id) && t.userId === req.session.user.id);
@@ -126,9 +144,12 @@ app.delete('/api/tasks/:id', isAuthenticated, (req, res) => {
   res.json({ success: true });
 });
 
+// Відкриття особистого кабінету лише для авторизованих користувачів.
+// Якщо користувач не увійшов у систему, його перенаправляє на сторінку входу.
 app.get('/dashboard.html', (req, res, next) => {
   if (!req.session.user) return res.redirect('/login.html');
   res.sendFile(path.join(__dirname, 'public', 'dashboard.html'));
 });
 
+// Запуск вебсервера та виведення адреси в консоль.
 app.listen(PORT, () => console.log(`Todo App працює: http://localhost:${PORT}`));
